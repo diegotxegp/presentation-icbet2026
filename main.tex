@@ -1,0 +1,578 @@
+% ICBET 2026 — Beamer Presentation
+% "Towards a Human-Guided AutoML Application for Democratizing
+%  Predictive Modeling in Clinical Research"
+% Compile: pdflatex main.tex  (run twice)
+% ─────────────────────────────────────────────────────────────────────────────
+\documentclass[aspectratio=169,10pt,english,dvipsnames]{beamer}
+
+\input{customizacoes}
+
+% ── Colour aliases (mapped to the customizacoes palette) ──────────────────────
+\colorlet{UCblue}     {UFTblue}
+\colorlet{UCblueLight}{PROFMATgreen}
+\colorlet{UCbluePale} {UFTblue!15}
+\colorlet{UCgreen}    {UFTgreen}
+\colorlet{UCgray}     {UFTgray}
+\definecolor{UCred}   {RGB}{180,30,30}
+\definecolor{UCorange}{RGB}{210,100,0}
+% ── Extra TikZ libraries not loaded in customizacoes ─────────────────────────
+\usetikzlibrary{shapes.geometric,arrows.meta}
+% ── Extra packages ────────────────────────────────────────────────────────────
+\usepackage{array}
+\usepackage{url}
+
+\usepackage{booktabs}
+\usepackage{multicol}
+
+% ── Presentation metadata ─────────────────────────────────────────────────────
+\title[HAMELIN for Clinical Research]{%
+  Towards a Human-Guided AutoML Application\\
+  for Democratizing Predictive Modeling in Clinical Research}
+
+\author[García-Prieto et al.]{%
+  Diego García-Prieto\inst{1} \and
+  Camilo Palazuelos\inst{1} \and
+  Rafael Duque\inst{1} \and
+  Lucía Lavín-Alconero\inst{2}}
+
+\institute{%
+  \inst{1}Dept.\ of Mathematics, Statistics and Computer Science
+          \textemdash{} Universidad de Cantabria
+  \and
+  \inst{2}Clinical Trials Agency Valdecilla-IDIVAL
+          \textemdash{} Marqués de Valdecilla University Hospital}
+
+\date{ICBET 2026 · Bali, Indonesia · 14th June, 2026}
+
+% ── Convenience commands ──────────────────────────────────────────────────────
+\newcommand{\advisorname}{}   % required by the title page template
+\newcommand{\yes}{\textcolor{UCgreen!70!black}{\checkmark}}
+\newcommand{\no}{$\times$}
+\newcommand{\partcheck}{$\sim$}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── Title slide ───────────────────────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+  \vspace{-4mm}
+  \begin{center}
+    \scriptsize
+    \textit{Supported by grant PID2023-146243OB-I00 funded by MICIU/AEI and ERDF/EU}
+  \end{center}
+\end{frame}
+
+% ── Table of contents ─────────────────────────────────────────────────────────
+\begin{frame}[t]{Contents}
+  \tableofcontents
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Motivation}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Research Context}
+  \begin{minipage}{0.54\textwidth}
+    \begin{itemize}
+      \item \textbf{AutoML democratization}:\\
+        Strong need for tools reducing technical barriers in predictive modeling
+
+      \item \textbf{Clinical ML opportunity}:\\
+        Predictive models to support diagnosis, prognosis and treatment decisions
+
+      \item \textbf{Gap in practice}:\\
+        Domain-agnostic tools fail in clinical settings — potential remains unrealized
+
+      \item \textbf{HAMELIN proposal}:\\
+        Protocol-aware AutoML designed for Clinical Research Professionals (CRPs)
+    \end{itemize}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.44\textwidth}
+    \begin{block}{Four Research Contributions}
+      \begin{enumerate}\scriptsize
+        \item Protocol-aware interface grounded in real clinical protocols
+        \item Mapping clinical concepts to ML pipeline stages
+        \item Operationalization and evaluation of HGML criteria
+        \item Participatory design methodology involving CRPs
+      \end{enumerate}
+    \end{block}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{The Expertise Gap}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.82, transform shape]
+      % Clinicians
+      \node[rectangle, draw=UCblue, fill=UCbluePale, minimum width=3.2cm,
+            minimum height=2.6cm, text width=3cm, align=center,
+            rounded corners=0.3cm, drop shadow, font=\small] (clin) at (0,0) {
+        \textbf{Clinical}\\[1mm]\textbf{Researchers}\\[3mm]
+        \scriptsize Domain expertise\\Clinical protocols\\No ML training};
+      % Data scientists
+      \node[rectangle, draw=UCgreen, fill=UCgreen!15, minimum width=3.2cm,
+            minimum height=2.6cm, text width=3cm, align=center,
+            rounded corners=0.3cm, drop shadow, font=\small] (ds) at (9.5,0) {
+        \textbf{Data}\\[1mm]\textbf{Scientists}\\[3mm]
+        \scriptsize ML expertise\\Algorithm design\\No clinical training};
+      % GAP
+      \node[rectangle, draw=UCorange, dashed, fill=UCorange!8, minimum width=2.8cm,
+            minimum height=2.6cm, text width=2.5cm, align=center,
+            rounded corners=0.2cm, font=\small] (gap) at (4.75,0) {
+        \textbf{GAP}\\[2mm]
+        \scriptsize Terminology\\Protocol structure\\ML requirements\\Clinical validity};
+      % Arrows
+      \draw[->, thick, UCblue!70] (clin.east) -- (gap.west);
+      \draw[->, thick, UCgreen!70] (ds.west) -- (gap.east);
+      % HAMELIN bridge
+      \node[rectangle, draw=UCblue, fill=UCblue, text=white,
+            minimum width=5.2cm, minimum height=0.85cm,
+            rounded corners=0.2cm, font=\small\bfseries] (ham) at (4.75,-2.6) {HAMELIN};
+      \draw[->, thick, UCblue!80, dashed] (ham.north) -- (gap.south);
+      \draw[thick, UCblue!50, dashed] (ham.west) -- +(-2.5,0) |- (clin.south);
+      \draw[thick, UCgreen!50, dashed] (ham.east) -- +(2.5,0) |- (ds.south);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{What Generic AutoML Ignores}
+  Existing platforms \textbf{treat clinical datasets as generic matrices}, ignoring:
+  \vspace{2mm}
+  \begin{table}
+    \centering\scriptsize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{p{3.2cm} p{5cm} p{5cm}}
+      \toprule
+      \textbf{Ignored Aspect} & \textbf{Clinical Significance} & \textbf{Consequence if Ignored} \\
+      \midrule
+      Protocol phases          & Screening $\neq$ Follow-up data              & \textcolor{UCred}{\textbf{Data leakage}} \\
+      Endpoint hierarchy       & Primary vs.\ secondary endpoints             & Invalid conclusions \\
+      Inclusion/exclusion      & Defines study population                      & Wrong population trained \\
+      Confounding variables    & Influence both exposure and outcome           & \textcolor{UCred}{\textbf{Biased predictions}} \\
+      Study design type        & Registry $\neq$ Trial requirements            & Methodological mismatch \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{3mm}
+  \begin{alertblock}{Key Finding}
+    No existing tool adapts to the distinct requirements of patient registries,
+    observational studies and clinical trials within a unified interface.
+  \end{alertblock}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Background}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Clinical Research Protocols}
+  A protocol is the \textbf{authoritative document} governing all aspects of a study:
+  population, variables, temporal structure and outcome hierarchy.
+  \vspace{3mm}
+
+  \begin{columns}[T]
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Patient Registries}
+        \begin{itemize}\scriptsize
+          \item Long-term observational
+          \item Shared medical condition
+          \item Disease history, treatments, outcomes
+          \item \textbf{Flexible variable selection}
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Observational Studies}
+        \begin{itemize}\scriptsize
+          \item Test exposure–outcome hypotheses
+          \item No intervention
+          \item \textbf{Must adjust for confounding}
+          \item Selection bias concerns
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{alertblock}{Clinical Trials}
+        \begin{itemize}\scriptsize
+          \item Randomized + blinded
+          \item Explicit temporal phases
+          \item Endpoint hierarchy
+          \item Inclusion/exclusion criteria
+          \item \textbf{Most complex constraints}
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Temporal Constraints --- Data Leakage Risk}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.80, transform shape]
+      % Phase boxes
+      \foreach \i/\name/\col in {
+          0/Screening/UCblue!70,
+          2.6/Baseline/UCblue!50,
+          5.2/Intervention/UCorange!70,
+          7.8/{Follow-up}/UCgreen!60,
+          10.4/Endpoint/UCred!70}{
+        \node[rectangle, draw, fill=\col, minimum width=2.2cm, minimum height=1cm,
+              text centered, rounded corners=0.15cm, font=\scriptsize\bfseries,
+              text width=2cm] at (\i, 0) {\name};
+      }
+      % Arrows between phases
+      \foreach \x in {1.2, 3.8, 6.4, 9.0}{
+        \draw[->, thick] (\x, 0) -- (\x+0.3, 0);
+      }
+      % Data leakage risk zone
+      \draw[dashed, UCred, thick, rounded corners=0.15cm]
+        (-0.2,-0.7) rectangle (7.4,-1.7);
+      \node[font=\scriptsize, UCred!80!black] at (3.6,-1.2)
+        {\textbf{Data Leakage Risk}: using post-baseline variables to predict a baseline outcome};
+      % HAMELIN approach
+      \draw[UCgreen!70!black, thick, rounded corners=0.15cm]
+        (-0.2,-2.1) rectangle (12.8,-2.9);
+      \node[font=\scriptsize, UCgreen!60!black] at (6.3,-2.5)
+        {\textbf{HAMELIN}: protocol phase assignment enables explicit prevention of temporal leakage};
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Human-Centered AI Framework}
+  \begin{minipage}{0.5\textwidth}
+    \begin{itemize}
+      \item \textbf{Paradigm shift}:\\
+        Decoupling automation from human control
+
+      \item \textbf{Two-dimensional conception}:\\
+        High automation + High human control are simultaneously achievable
+
+      \item \textbf{Goal}:\\
+        Upper-right quadrant: extensive automation with meaningful user control
+
+      \item \textbf{Applied to HAMELIN}:\\
+        Explicit design target --- full HCAI compliance
+    \end{itemize}
+    \vspace{3mm}
+    {\scriptsize \textbf{Shneiderman (2022)}: \textit{Human-Centered AI}\\
+    No existing tool achieves maximum on both dimensions simultaneously}
+  \end{minipage}%
+  \begin{minipage}{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.65, transform shape]
+      \draw[->, thick] (0,0) -- (8,0) node[anchor=north, xshift=-1.5cm] {Computer Automation};
+      \draw[->, thick] (0,0) -- (0,8) node[anchor=south east, rotate=90] {Human Control};
+      \draw[dashed] (0,4) -- (8,4);
+      \draw[dashed] (4,0) -- (4,8);
+      \node[align=center] at (2,2) {Low \\ Human Control \\ Low \\ Automation};
+      \node[align=center] at (6,2) {Low \\ Human Control \\ High \\ Automation};
+      \node[align=center] at (2,6) {High \\ Human Control \\ Low \\ Automation};
+      \node[align=center, fill=green!20] at (6,6)
+        {\textbf{HCAI Goal} \\ High \\ Human Control \\ High \\ Automation};
+      \node[circle, fill=UCblue, text=white, font=\small\bfseries, inner sep=2pt] at (8.0,7.0) {HAMELIN};
+    \end{tikzpicture}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Human-Guided Machine Learning (HGML)}
+  \begin{block}{HGML Concept \normalfont\small (Gil et al., 2019)}
+    Concrete realization of HCAI: systematic incorporation of expert knowledge into ML
+    workflows through structured interaction patterns across the entire pipeline
+  \end{block}
+  \vspace{3mm}
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Three Task Categories}
+        \begin{itemize}\scriptsize
+          \item \textbf{Data Use}: variable selection, instance selection, missing data handling
+          \item \textbf{Model Development}: model selection, parameter settings, solution design
+          \item \textbf{Model Interpretation}: assessment, comparison, parameter analysis
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{HGML vs.\ HCAI}
+        \begin{itemize}\scriptsize
+          \item \textbf{HCAI} provides high-level design principles for human--AI collaboration
+          \item \textbf{HGML} translates these into actionable criteria grounded in ML workflows
+          \item Together they make HGML particularly suitable for assessing systems that aim to democratize predictive modeling in specialized domains
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{HAMELIN System}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{What is HAMELIN?}
+  \begin{block}{Definition}
+    \textbf{HAMELIN} --- a \textbf{no-code, protocol-aware AutoML} application under development,
+    specifically designed to operationalize HGML principles for clinical research
+  \end{block}
+  \vspace{4mm}
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Core Design Goals}
+      \begin{itemize}
+        \item Enable CRPs \textbf{without programming skills} to build predictive models
+        \item Incorporate \textbf{domain knowledge at every stage}
+        \item Respect \textbf{methodological constraints} of real study designs
+        \item Use \textbf{clinical terminology} aligned with research practice
+        \item Support \textbf{iterative refinement} guided by domain insights
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Participatory Design Process}
+        \begin{itemize}\scriptsize
+          \item Partner CRP from IDIVAL / Valdecilla
+          \item Weekly data science team meetings
+          \item Quarterly CRP evaluation sessions
+          \item Mockup $\rightarrow$ feedback $\rightarrow$ implementation cycles
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{Four Real Clinical Protocols}
+        \scriptsize
+        COVID-19 Registry · UPS Observational Study\\
+        COLCHI-COVID Trial · VACAB-2022 Trial
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Key Design Decision: Clinical Terminology}
+  One of the most impactful outcomes of the participatory design process:
+  \vspace{3mm}
+
+  \begin{minipage}{0.48\textwidth}
+    \begin{alertblock}{Before (ML Jargon) \quad $\times$}
+      \begin{tabular}{ll}\scriptsize
+        \textbf{ML Term}   & \textbf{Perceived as\ldots} \\\hline
+        Target variable    & Ambiguous, technical \\
+        Filters            & Superficial selection \\
+        Features           & Vague, unfamiliar \\
+        Training set       & Unclear clinical meaning \\
+      \end{tabular}
+    \end{alertblock}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+    \begin{exampleblock}{After (Clinical Language) \quad \checkmark}
+      \begin{tabular}{ll}\scriptsize
+        \textbf{Clinical Term} & \textbf{Familiar because\ldots} \\\hline
+        Primary variable       & Matches endpoint hierarchy \\
+        Criteria               & Mirrors inclusion/exclusion \\
+        Variables              & Standard in clinical forms \\
+        Study population       & Standard research concept \\
+      \end{tabular}
+    \end{exampleblock}
+  \end{minipage}
+
+  \vspace{3mm}
+  \begin{block}{}
+    Language alignment reduces cognitive friction and increases researcher trust in the system.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Tab-Based Workflow}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.72, transform shape, node distance=0.3cm]
+      \tikzset{tab/.style={rectangle, draw, minimum width=2.0cm, minimum height=0.9cm,
+                           text centered, rounded corners=0.15cm,
+                           font=\tiny\bfseries, text width=1.8cm}}
+      \node[tab, fill=UCblue!80,  text=white] (t1) {\textbf{1}\\ Start};
+      \node[tab, fill=cyan!60,    text=black, right=of t1] (t2) {\textbf{2}\\ Status};
+      \node[tab, fill=teal!60,    text=white, right=of t2] (t3) {\textbf{3}\\ Primary\\Variable};
+      \node[tab, fill=yellow!70,  text=black, right=of t3] (t4) {\textbf{4}\\ Criteria};
+      \node[tab, fill=UCorange!80,text=white, right=of t4] (t5) {\textbf{5}\\ Settings};
+      \node[tab, fill=UCred!80,   text=white, right=of t5] (t6) {\textbf{6}\\ Process};
+      \node[tab, fill=UCgreen!80, text=white, right=of t6] (t7) {\textbf{7}\\ Results};
+      \foreach \a/\b in {t1/t2, t2/t3, t3/t4, t4/t5, t5/t6, t6/t7}
+        \draw[->, thick] (\a) -- (\b);
+      \draw[->, dashed, UCred!80, thick]
+        (t7.south) -- +(0,-0.9) -| (t1.south)
+        node[midway, below, font=\tiny, UCred!80] {Iterative Reconfiguration};
+    \end{tikzpicture}
+  \end{center}
+
+  \vspace{2mm}
+  \begin{block}{Seven-Tab Pipeline}
+    \begin{multicols}{2}
+      \begin{enumerate}\scriptsize
+        \item \textbf{Start}: Project creation, metadata, dataset loading
+        \item \textbf{Status}: Automatic EDA --- stats, missing data heatmap
+        \item \textbf{Primary Variable}: Target selection, task-type detection
+        \item \textbf{Criteria}: Inclusion/exclusion rule builder
+        \item \textbf{Settings}: Metrics, missing data strategies, runtime limit
+        \item \textbf{Process}: Training with real-time progress monitoring
+        \item \textbf{Results}: Performance dashboard with clinical explanations
+      \end{enumerate}
+    \end{multicols}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Results Tab --- Real Interface Output}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Performance Chart}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.92\textwidth]{img/Interface/interface-performance.png}
+        \end{figure}
+        {\scriptsize Metrics displayed: Accuracy · AUC-ROC · MAE · RMSE · Loss}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Confusion Matrix}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.85\textwidth]{img/Interface/interface-confusionmatrix.png}
+        \end{figure}
+        {\scriptsize Visual breakdown enabling clinical interpretation\\
+        of false negatives and false positives}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{HGML Alignment}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{HGML Coverage --- Data Use \& Model Development}
+  \begin{table}
+    \centering\tiny
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{c l p{5.5cm} l}
+      \toprule
+      \multicolumn{4}{c}{\textbf{\small Data Use (Gil et al. task IDs)}} \\
+      \midrule
+      VS4 & Impute missing values         & Settings --- Ludwig imputation strategies      & \cellcolor{UCgreen!25}\textbf{Full} \\
+      VR1 & Require inclusion/exclusion   & Criteria --- visual rule builder               & \cellcolor{UCgreen!25}\textbf{Full} \\
+      IS2 & Select subpopulation          & Criteria tab                                   & \cellcolor{UCgreen!25}\textbf{Full} \\
+      IS3 & Remove specific instances     & Criteria tab                                   & \cellcolor{UCgreen!25}\textbf{Full} \\
+      VS1 & Variable selection            & Primary Variable + Settings tabs               & \cellcolor{UCorange!25}\textbf{Partial} \\
+      VS3 & Temporal/spatial framing      & Criteria --- protocol phase assignment         & \cellcolor{UCorange!25}\textbf{Partial} \\
+      VS2 & Create new variables          & --- (external preprocessing required)          & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      VS5 & Augment data using new sources & ---                                           & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      IS1 & Select instances to label     & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      IS4 & Train/test split control      & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      \midrule
+      \multicolumn{4}{c}{\textbf{\small Model Development}} \\
+      \midrule
+      SD1 & Request data-preparation step & Settings --- imputation strategies             & \cellcolor{UCgreen!25}\textbf{Full} \\
+      SD2 & Replace data-preparation step & Settings --- strategy selection                & \cellcolor{UCgreen!25}\textbf{Full} \\
+      MS1 & Request specific model type   & Ludwig auto-selects by data type               & \cellcolor{UCorange!25}\textbf{Partial} \\
+      PT1 & Request specific parameters   & Settings --- hyperparameter ranges             & \cellcolor{UCorange!25}\textbf{Partial} \\
+      MS2 & Replace model in prior sol.   & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{HGML Coverage --- Model Interpretation}
+  \begin{table}
+    \centering\scriptsize
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{c l p{6cm} l}
+      \toprule
+      \multicolumn{4}{c}{\textbf{Model Interpretation}} \\
+      \midrule
+      QC1 & Request metrics (AUC, MAE, Accuracy)       & Results tab            & \cellcolor{UCgreen!25}\textbf{Full} \\
+      QC2 & Request intermediate results (hyperopt)    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      MC1 & Compare solutions with different models    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      MC2 & Compare solutions on different subsets     & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      MC3 & Same model, different data preparation     & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      MC4 & Same model, different parameters           & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      MC5 & Two models, all other steps equal          & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      PC1 & Solutions with varying parameter ranges    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{2mm}
+  \begin{alertblock}{Main Limitation}
+    The comparison category (MC1--MC5) requires a \textbf{solution history mechanism}
+    not yet implemented. This is the primary HGML gap of the current system.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Coverage Analysis by Category}
+  \begin{columns}[T]
+    \begin{column}{0.33\textwidth}
+      \begin{exampleblock}{Data Use}
+        \centering\Large\textbf{6 / 10}\\
+        \vspace{2mm}\normalsize
+        \begin{itemize}\scriptsize
+          \item 4 fully implemented
+          \item 2 partial
+          \item 4 not implemented
+        \end{itemize}
+        \vspace{2mm}
+        \scriptsize\textbf{Strong coverage} for protocol-aligned tasks
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Model Development}
+        \centering\Large\textbf{4 / 5}\\
+        \vspace{2mm}\normalsize
+        \begin{itemize}\scriptsize
+          \item 2 fully implemented
+          \item 2 partial
+          \item 1 not implemented
+        \end{itemize}
+        \vspace{2mm}
+        \scriptsize\textbf{Moderate} --- automation vs.\ control trade-off
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{alertblock}{Model Interpretation}
+        \centering\Large\textbf{1 / 8}\\
+        \vspace{2mm}\normalsize
+        \begin{itemize}\scriptsize
+          \item 1 fully implemented
+          \item 7 not implemented
+        \end{itemize}
+        \vspace{2mm}
+        \scriptsize\textbf{Main gap}: no solution history or comparison mechanism
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Conclusions}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Conclusions}
+  \begin{block}{Main Contributions}
+    \begin{itemize}
+      \item \textbf{First end-to-end HGML system} designed specifically for clinical research
+      \item \textbf{Protocol-aware interface}: temporal phases, endpoint hierarchy, inclusion/exclusion logic
+      \item \textbf{Strong data-use HGML alignment}: 6/10 tasks fully or partially supported
+      \item \textbf{Iterative refinement loop} enabling domain-guided exploration of the modeling space
+      \item \textbf{Participatory methodology} grounded in four real protocols and a real clinical dataset
+    \end{itemize}
+  \end{block}
+  \vspace{3mm}
+  \begin{alertblock}{Take-Home Message}
+    Generic AutoML tools fail clinical research not because of lack of ML power, but because
+    they ignore the \textbf{semantic structure of clinical data}.
+    HAMELIN's contribution is not a new algorithm --- it is a \textbf{new interface paradigm}
+    aligned with how clinical research actually works.
+  \end{alertblock}
+\end{frame}
+
+% ── Thank you ─────────────────────────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+  \vspace{-4mm}
+  \begin{center}
+    \scriptsize
+    \textit{Supported by grant PID2023-146243OB-I00 funded by MICIU/AEI and ERDF/EU}
+  \end{center}
+\end{frame}
+
+\end{document}
