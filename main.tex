@@ -29,7 +29,7 @@
   Towards a Human-Guided AutoML Application\\
   for Democratizing Predictive Modeling in Clinical Research}
 
-\author[García-Prieto et al.]{%
+\author[Diego García-Prieto]{%
   Diego García-Prieto\inst{1} \and
   Camilo Palazuelos\inst{1} \and
   Rafael Duque\inst{1} \and
@@ -42,7 +42,7 @@
   \inst{2}Clinical Trials Agency Valdecilla-IDIVAL
           \textemdash{} Marqués de Valdecilla University Hospital}
 
-\date{ICBET 2026 · Bali, Indonesia · 14th June, 2026}
+\date{14th June, 2026}
 
 % ── Convenience commands ──────────────────────────────────────────────────────
 \newcommand{\advisorname}{}   % required by the title page template
@@ -142,11 +142,13 @@
   \begin{table}
     \centering\scriptsize
     \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{p{3.2cm} p{5cm} p{5cm}}
+    \begin{tabular}{p{3.0cm} p{4.8cm} p{4.8cm}}
       \toprule
       \textbf{Ignored Aspect} & \textbf{Clinical Significance} & \textbf{Consequence if Ignored} \\
       \midrule
-      Protocol phases          & Screening $\neq$ Follow-up data              & \textcolor{UCred}{\textbf{Data leakage}} \\
+      Protocol phases
+        & Screening $\neq$ Follow-up data
+        & \textcolor{UCred}{\textbf{Data leakage}}: variables collected \emph{after} the outcome used to predict it \\
       Endpoint hierarchy       & Primary vs.\ secondary endpoints             & Invalid conclusions \\
       Inclusion/exclusion      & Defines study population                      & Wrong population trained \\
       Confounding variables    & Influence both exposure and outcome           & \textcolor{UCred}{\textbf{Biased predictions}} \\
@@ -154,7 +156,7 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  \vspace{3mm}
+  \vspace{2mm}
   \begin{alertblock}{Key Finding}
     No existing tool adapts to the distinct requirements of patient registries,
     observational studies and clinical trials within a unified interface.
@@ -192,7 +194,7 @@
       \end{block}
     \end{column}
     \begin{column}{0.33\textwidth}
-      \begin{alertblock}{Clinical Trials}
+      \begin{block}{Clinical Trials}
         \begin{itemize}\scriptsize
           \item Randomized + blinded
           \item Explicit temporal phases
@@ -200,7 +202,7 @@
           \item Inclusion/exclusion criteria
           \item \textbf{Most complex constraints}
         \end{itemize}
-      \end{alertblock}
+      \end{block}
     \end{column}
   \end{columns}
 \end{frame}
@@ -227,7 +229,7 @@
       \draw[dashed, UCred, thick, rounded corners=0.15cm]
         (-0.2,-0.7) rectangle (7.4,-1.7);
       \node[font=\scriptsize, UCred!80!black] at (3.6,-1.2)
-        {\textbf{Data Leakage Risk}: using post-baseline variables to predict a baseline outcome};
+        {\textbf{Data Leakage Risk}: using variables collected after the outcome event to predict that outcome};
       % HAMELIN approach
       \draw[UCgreen!70!black, thick, rounded corners=0.15cm]
         (-0.2,-2.1) rectangle (12.8,-2.9);
@@ -237,7 +239,7 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Human-Centered AI Framework}
+\begin{frame}{Human-Centered AI Framework} \small
   \begin{minipage}{0.5\textwidth}
     \begin{itemize}
       \item \textbf{Paradigm shift}:\\
@@ -250,17 +252,17 @@
         Upper-right quadrant: extensive automation with meaningful user control
 
       \item \textbf{Applied to HAMELIN}:\\
-        Explicit design target --- full HCAI compliance
+        Explicit design target. Full HCAI compliance
     \end{itemize}
     \vspace{3mm}
-    {\scriptsize \textbf{Shneiderman (2022)}: \textit{Human-Centered AI}\\
+    {\scriptsize \textbf{Shneiderman (2022)}: \textit{Human-Centered Artificial Intelligence}\\
     No existing tool achieves maximum on both dimensions simultaneously}
   \end{minipage}%
   \begin{minipage}{0.5\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.65, transform shape]
-      \draw[->, thick] (0,0) -- (8,0) node[anchor=north, xshift=-1.5cm] {Computer Automation};
-      \draw[->, thick] (0,0) -- (0,8) node[anchor=south east, rotate=90] {Human Control};
+      \draw[->, thick] (0,0) -- (8,0) node[anchor=north, xshift=-1.5cm, yshift=-0.2cm] {Computer Automation};
+      \draw[->, thick] (0,0) -- (0,8) node[anchor=south east, rotate=90, xshift=-0.2cm, yshift=0.2cm] {Human Control};
       \draw[dashed] (0,4) -- (8,4);
       \draw[dashed] (4,0) -- (4,8);
       \node[align=center] at (2,2) {Low \\ Human Control \\ Low \\ Automation};
@@ -306,15 +308,15 @@
 \section{HAMELIN System}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{What is HAMELIN?}
-  \begin{block}{Definition}
+\begin{frame}{What is HAMELIN?} \small
+  \begin{block}{Definition} \small
     \textbf{HAMELIN} --- a \textbf{no-code, protocol-aware AutoML} application under development,
     specifically designed to operationalize HGML principles for clinical research
   \end{block}
   \vspace{4mm}
 
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.5\textwidth} \small
       \textbf{Core Design Goals}
       \begin{itemize}
         \item Enable CRPs \textbf{without programming skills} to build predictive models
@@ -343,7 +345,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Key Design Decision: Clinical Terminology}
+\begin{frame}{Key Design Decision: Clinical Terminology} \small
   One of the most impactful outcomes of the participatory design process:
   \vspace{3mm}
 
@@ -377,12 +379,12 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{Tab-Based Workflow}
+\begin{frame}{Tab-Based Workflow} \small
   \begin{center}
     \begin{tikzpicture}[scale=0.72, transform shape, node distance=0.3cm]
       \tikzset{tab/.style={rectangle, draw, minimum width=2.0cm, minimum height=0.9cm,
                            text centered, rounded corners=0.15cm,
-                           font=\tiny\bfseries, text width=1.8cm}}
+                           font=\small\bfseries, text width=1.8cm}}
       \node[tab, fill=UCblue!80,  text=white] (t1) {\textbf{1}\\ Start};
       \node[tab, fill=cyan!60,    text=black, right=of t1] (t2) {\textbf{2}\\ Status};
       \node[tab, fill=teal!60,    text=white, right=of t2] (t3) {\textbf{3}\\ Primary\\Variable};
@@ -394,7 +396,7 @@
         \draw[->, thick] (\a) -- (\b);
       \draw[->, dashed, UCred!80, thick]
         (t7.south) -- +(0,-0.9) -| (t1.south)
-        node[midway, below, font=\tiny, UCred!80] {Iterative Reconfiguration};
+        node[midway, below, font=\small, UCred!80] {Iterative Reconfiguration};
     \end{tikzpicture}
   \end{center}
 
@@ -442,111 +444,79 @@
 \section{HGML Alignment}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{HGML Coverage --- Data Use \& Model Development}
-  \begin{table}
-    \centering\tiny
-    \renewcommand{\arraystretch}{1.25}
-    \begin{tabular}{c l p{5.5cm} l}
-      \toprule
-      \multicolumn{4}{c}{\textbf{\small Data Use (Gil et al. task IDs)}} \\
-      \midrule
-      VS4 & Impute missing values         & Settings --- Ludwig imputation strategies      & \cellcolor{UCgreen!25}\textbf{Full} \\
-      VR1 & Require inclusion/exclusion   & Criteria --- visual rule builder               & \cellcolor{UCgreen!25}\textbf{Full} \\
-      IS2 & Select subpopulation          & Criteria tab                                   & \cellcolor{UCgreen!25}\textbf{Full} \\
-      IS3 & Remove specific instances     & Criteria tab                                   & \cellcolor{UCgreen!25}\textbf{Full} \\
-      VS1 & Variable selection            & Primary Variable + Settings tabs               & \cellcolor{UCorange!25}\textbf{Partial} \\
-      VS3 & Temporal/spatial framing      & Criteria --- protocol phase assignment         & \cellcolor{UCorange!25}\textbf{Partial} \\
-      VS2 & Create new variables          & --- (external preprocessing required)          & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      VS5 & Augment data using new sources & ---                                           & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      IS1 & Select instances to label     & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      IS4 & Train/test split control      & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      \midrule
-      \multicolumn{4}{c}{\textbf{\small Model Development}} \\
-      \midrule
-      SD1 & Request data-preparation step & Settings --- imputation strategies             & \cellcolor{UCgreen!25}\textbf{Full} \\
-      SD2 & Replace data-preparation step & Settings --- strategy selection                & \cellcolor{UCgreen!25}\textbf{Full} \\
-      MS1 & Request specific model type   & Ludwig auto-selects by data type               & \cellcolor{UCorange!25}\textbf{Partial} \\
-      PT1 & Request specific parameters   & Settings --- hyperparameter ranges             & \cellcolor{UCorange!25}\textbf{Partial} \\
-      MS2 & Replace model in prior sol.   & ---                                            & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{HGML Coverage --- Model Interpretation}
-  \begin{table}
-    \centering\scriptsize
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{c l p{6cm} l}
-      \toprule
-      \multicolumn{4}{c}{\textbf{Model Interpretation}} \\
-      \midrule
-      QC1 & Request metrics (AUC, MAE, Accuracy)       & Results tab            & \cellcolor{UCgreen!25}\textbf{Full} \\
-      QC2 & Request intermediate results (hyperopt)    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      MC1 & Compare solutions with different models    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      MC2 & Compare solutions on different subsets     & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      MC3 & Same model, different data preparation     & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      MC4 & Same model, different parameters           & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      MC5 & Two models, all other steps equal          & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      PC1 & Solutions with varying parameter ranges    & ---                    & \cellcolor{UCred!20}\textbf{Not impl.} \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  \vspace{2mm}
-  \begin{alertblock}{Main Limitation}
-    The comparison category (MC1--MC5) requires a \textbf{solution history mechanism}
-    not yet implemented. This is the primary HGML gap of the current system.
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}{Coverage Analysis by Category}
+\begin{frame}{HGML Alignment --- Coverage} \small
   \begin{columns}[T]
-    \begin{column}{0.33\textwidth}
-      \begin{exampleblock}{Data Use}
-        \centering\Large\textbf{6 / 10}\\
-        \vspace{2mm}\normalsize
-        \begin{itemize}\scriptsize
-          \item 4 fully implemented
-          \item 2 partial
-          \item 4 not implemented
-        \end{itemize}
-        \vspace{2mm}
-        \scriptsize\textbf{Strong coverage} for protocol-aligned tasks
-      \end{exampleblock}
+    \begin{column}{0.54\textwidth}
+      \begin{table}
+        \centering\tiny
+        \renewcommand{\arraystretch}{1.2}
+        \begin{tabular}{c p{2.6cm} l}
+          \toprule
+          \multicolumn{3}{c}{\textbf{Data Use}} \\
+          \midrule
+          VS4 & Impute missing values        & \cellcolor{UCgreen!25}\textbf{Full} \\
+          VR1 & Require incl./excl.\ vars    & \cellcolor{UCgreen!25}\textbf{Full} \\
+          IS2 & Select subpopulation         & \cellcolor{UCgreen!25}\textbf{Full} \\
+          IS3 & Remove specific instances    & \cellcolor{UCgreen!25}\textbf{Full} \\
+          VS1 & Variable selection           & \cellcolor{UCorange!25}\textbf{Partial} \\
+          VS3 & Temporal/spatial framing     & \cellcolor{UCorange!25}\textbf{Partial} \\
+          VS2 & Create new variables         & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          VS5 & Augment data (new sources)   & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          IS1 & Select instances to label    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          IS4 & Train/test split control     & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          \midrule
+          \multicolumn{3}{c}{\textbf{Model Development}} \\
+          \midrule
+          SD1 & Request data-prep step       & \cellcolor{UCgreen!25}\textbf{Full} \\
+          SD2 & Replace data-prep step       & \cellcolor{UCgreen!25}\textbf{Full} \\
+          MS1 & Request specific model type  & \cellcolor{UCorange!25}\textbf{Partial} \\
+          PT1 & Request specific parameters  & \cellcolor{UCorange!25}\textbf{Partial} \\
+          MS2 & Replace model in prior sol.  & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
     \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Model Development}
-        \centering\Large\textbf{4 / 5}\\
-        \vspace{2mm}\normalsize
-        \begin{itemize}\scriptsize
-          \item 2 fully implemented
-          \item 2 partial
-          \item 1 not implemented
-        \end{itemize}
-        \vspace{2mm}
-        \scriptsize\textbf{Moderate} --- automation vs.\ control trade-off
+    \begin{column}{0.44\textwidth}
+      \begin{table}
+        \centering\tiny
+        \renewcommand{\arraystretch}{1.2}
+        \begin{tabular}{c p{3.2cm} l}
+          \toprule
+          \multicolumn{3}{c}{\textbf{Model Interpretation}} \\
+          \midrule
+          QC1 & Request metrics (AUC, MAE\ldots) & \cellcolor{UCgreen!25}\textbf{Full} \\
+          QC2 & Intermediate results (hyperopt)  & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          MC1 & Compare different models         & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          MC2 & Compare on different subsets     & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          MC3 & Same model, diff.\ data prep     & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          MC4 & Same model, diff.\ parameters    & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          MC5 & Two models, all else equal       & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          PC1 & Varying parameter ranges         & \cellcolor{UCred!20}\textbf{Not impl.} \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
+      \vspace{3mm}
+      \begin{block}{\scriptsize Summary}
+        \tiny
+        \textbf{Data Use}: 4 full · 2 partial · 4 not impl.\\
+        \textbf{Model Dev.}: 2 full · 2 partial · 1 not impl.\\
+        \textbf{Interpretation}: 1 full · 7 not impl.
       \end{block}
     \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{alertblock}{Model Interpretation}
-        \centering\Large\textbf{1 / 8}\\
-        \vspace{2mm}\normalsize
-        \begin{itemize}\scriptsize
-          \item 1 fully implemented
-          \item 7 not implemented
-        \end{itemize}
-        \vspace{2mm}
-        \scriptsize\textbf{Main gap}: no solution history or comparison mechanism
-      \end{alertblock}
-    \end{column}
   \end{columns}
+  \vspace{1mm}
+  \begin{alertblock}{Main Gap}
+    \scriptsize
+    The \textbf{comparison category} (MC1--MC5) requires a solution history mechanism
+    not yet implemented --- primary HGML limitation of the current system.
+  \end{alertblock}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Conclusions}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Conclusions}
+\begin{frame}{Conclusions} \small
   \begin{block}{Main Contributions}
     \begin{itemize}
       \item \textbf{First end-to-end HGML system} designed specifically for clinical research
@@ -560,7 +530,8 @@
   \begin{alertblock}{Take-Home Message}
     Generic AutoML tools fail clinical research not because of lack of ML power, but because
     they ignore the \textbf{semantic structure of clinical data}.
-    HAMELIN's contribution is not a new algorithm --- it is a \textbf{new interface paradigm}
+    
+    HAMELIN's contribution is not a new algorithm. It is a \textbf{new interface paradigm}
     aligned with how clinical research actually works.
   \end{alertblock}
 \end{frame}
