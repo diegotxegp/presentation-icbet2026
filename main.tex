@@ -36,8 +36,8 @@
   Lucía Lavín-Alconero\inst{2}}
 
 \institute{%
-  \inst{1}Dept.\ of Mathematics, Statistics and Computer Science
-          \textemdash{} Universidad de Cantabria
+  \inst{1}Dept. of Mathematics, Statistics and Computer Science
+          \textemdash{} University de Cantabria
   \and
   \inst{2}Clinical Trials Agency Valdecilla-IDIVAL
           \textemdash{} Marqués de Valdecilla University Hospital}
@@ -72,36 +72,43 @@
 \section{Motivation}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Research Context}
-  \begin{minipage}{0.54\textwidth}
-    \begin{itemize}
-      \item \textbf{AutoML democratization}:\\
-        Strong need for tools reducing technical barriers in predictive modeling
+\begin{frame}{Research Context} \small
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \begin{itemize}
+        \item \textbf{AutoML democratization}:\\
+          Strong need for tools reducing technical barriers in predictive modeling
 
-      \item \textbf{Clinical ML opportunity}:\\
-        Predictive models to support diagnosis, prognosis and treatment decisions
+        \item \textbf{Clinical ML opportunity}:\\
+          Predictive models to support diagnosis, prognosis and treatment decisions
 
-      \item \textbf{Gap in practice}:\\
-        Domain-agnostic tools fail in clinical settings — potential remains unrealized
+        \item \textbf{Clinical study types}:\\
+          Patient registries · Observational studies · Clinical trials:\\ each with distinct protocol constraints and variable structures
 
-      \item \textbf{HAMELIN proposal}:\\
-        Protocol-aware AutoML designed for Clinical Research Professionals (CRPs)
-    \end{itemize}
-  \end{minipage}%
-  \hfill
-  \begin{minipage}{0.44\textwidth}
-    \begin{block}{Four Research Contributions}
-      \begin{enumerate}\scriptsize
-        \item Protocol-aware interface grounded in real clinical protocols
-        \item Mapping clinical concepts to ML pipeline stages
-        \item Operationalization and evaluation of HGML criteria
-        \item Participatory design methodology involving CRPs
-      \end{enumerate}
-    \end{block}
-  \end{minipage}
+        \item \textbf{Gap in practice}:\\
+          Domain-agnostic tools fail in clinical settings — potential remains unrealized
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{itemize}
+        \item \textbf{HAMELIN proposal}:\\
+          Protocol-aware AutoML designed for Clinical Research Professionals (CRPs)
+      \end{itemize}
+      \vfill
+      \vspace{4mm}
+      \begin{block}{Four Research Contributions}
+        \begin{enumerate} \scriptsize
+          \item Protocol-aware interface grounded in real clinical protocols
+          \item Mapping clinical concepts to ML pipeline stages
+          \item Operationalization and evaluation of HGML criteria
+          \item Participatory design methodology involving CRPs
+        \end{enumerate}
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{The Expertise Gap}
+\begin{frame}{The Expertise Gap} \small
   \begin{center}
     \begin{tikzpicture}[scale=0.82, transform shape]
       % Clinicians
@@ -109,19 +116,19 @@
             minimum height=2.6cm, text width=3cm, align=center,
             rounded corners=0.3cm, drop shadow, font=\small] (clin) at (0,0) {
         \textbf{Clinical}\\[1mm]\textbf{Researchers}\\[3mm]
-        \scriptsize Domain expertise\\Clinical protocols\\No ML training};
+         Domain expertise\\Clinical protocols\\No ML training};
       % Data scientists
       \node[rectangle, draw=UCgreen, fill=UCgreen!15, minimum width=3.2cm,
             minimum height=2.6cm, text width=3cm, align=center,
             rounded corners=0.3cm, drop shadow, font=\small] (ds) at (9.5,0) {
         \textbf{Data}\\[1mm]\textbf{Scientists}\\[3mm]
-        \scriptsize ML expertise\\Algorithm design\\No clinical training};
+        ML expertise\\Algorithm design\\No clinical training};
       % GAP
       \node[rectangle, draw=UCorange, dashed, fill=UCorange!8, minimum width=2.8cm,
             minimum height=2.6cm, text width=2.5cm, align=center,
             rounded corners=0.2cm, font=\small] (gap) at (4.75,0) {
         \textbf{GAP}\\[2mm]
-        \scriptsize Terminology\\Protocol structure\\ML requirements\\Clinical validity};
+        Terminology\\Protocol structure\\ML requirements\\Clinical validity};
       % Arrows
       \draw[->, thick, UCblue!70] (clin.east) -- (gap.west);
       \draw[->, thick, UCgreen!70] (ds.west) -- (gap.east);
@@ -140,7 +147,7 @@
   Existing platforms \textbf{treat clinical datasets as generic matrices}, ignoring:
   \vspace{2mm}
   \begin{table}
-    \centering\scriptsize
+    \centering \small
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{p{3.0cm} p{4.8cm} p{4.8cm}}
       \toprule
@@ -167,96 +174,26 @@
 \section{Background}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Clinical Research Protocols}
-  A protocol is the \textbf{authoritative document} governing all aspects of a study:
-  population, variables, temporal structure and outcome hierarchy.
-  \vspace{3mm}
-
-  \begin{columns}[T]
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Patient Registries}
-        \begin{itemize}\scriptsize
-          \item Long-term observational
-          \item Shared medical condition
-          \item Disease history, treatments, outcomes
-          \item \textbf{Flexible variable selection}
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Observational Studies}
-        \begin{itemize}\scriptsize
-          \item Test exposure–outcome hypotheses
-          \item No intervention
-          \item \textbf{Must adjust for confounding}
-          \item Selection bias concerns
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{Clinical Trials}
-        \begin{itemize}\scriptsize
-          \item Randomized + blinded
-          \item Explicit temporal phases
-          \item Endpoint hierarchy
-          \item Inclusion/exclusion criteria
-          \item \textbf{Most complex constraints}
-        \end{itemize}
-      \end{block}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Temporal Constraints --- Data Leakage Risk}
-  \begin{center}
-    \begin{tikzpicture}[scale=0.80, transform shape]
-      % Phase boxes
-      \foreach \i/\name/\col in {
-          0/Screening/UCblue!70,
-          2.6/Baseline/UCblue!50,
-          5.2/Intervention/UCorange!70,
-          7.8/{Follow-up}/UCgreen!60,
-          10.4/Endpoint/UCred!70}{
-        \node[rectangle, draw, fill=\col, minimum width=2.2cm, minimum height=1cm,
-              text centered, rounded corners=0.15cm, font=\scriptsize\bfseries,
-              text width=2cm] at (\i, 0) {\name};
-      }
-      % Arrows between phases
-      \foreach \x in {1.2, 3.8, 6.4, 9.0}{
-        \draw[->, thick] (\x, 0) -- (\x+0.3, 0);
-      }
-      % Data leakage risk zone
-      \draw[dashed, UCred, thick, rounded corners=0.15cm]
-        (-0.2,-0.7) rectangle (7.4,-1.7);
-      \node[font=\scriptsize, UCred!80!black] at (3.6,-1.2)
-        {\textbf{Data Leakage Risk}: using variables collected after the outcome event to predict that outcome};
-      % HAMELIN approach
-      \draw[UCgreen!70!black, thick, rounded corners=0.15cm]
-        (-0.2,-2.1) rectangle (12.8,-2.9);
-      \node[font=\scriptsize, UCgreen!60!black] at (6.3,-2.5)
-        {\textbf{HAMELIN}: protocol phase assignment enables explicit prevention of temporal leakage};
-    \end{tikzpicture}
-  \end{center}
-\end{frame}
-
-\begin{frame}{Human-Centered AI Framework} \small
+\begin{frame}{Human-Centered Artificial Intelligence (HCAI)} \small
   \begin{minipage}{0.5\textwidth}
-    \begin{itemize}
-      \item \textbf{Paradigm shift}:\\
+  \begin{block}{HCAI Framework (Shneiderman, 2022)}
+      \begin{itemize}
+        \item \textbf{Paradigm shift}:\\
         Decoupling automation from human control
 
-      \item \textbf{Two-dimensional conception}:\\
+        \item \textbf{Two-dimensional conception}:\\
         High automation + High human control are simultaneously achievable
 
-      \item \textbf{Goal}:\\
+        \item \textbf{Goal}:\\
         Upper-right quadrant: extensive automation with meaningful user control
 
-      \item \textbf{Applied to HAMELIN}:\\
+      \end{itemize}
+  \end{block}
+      \textbf{Applied to HAMELIN}:\\
         Explicit design target. Full HCAI compliance
-    \end{itemize}
     \vspace{3mm}
-    {\scriptsize \textbf{Shneiderman (2022)}: \textit{Human-Centered Artificial Intelligence}\\
-    No existing tool achieves maximum on both dimensions simultaneously}
+    
+    No existing tool achieves maximum on both dimensions simultaneously
   \end{minipage}%
   \begin{minipage}{0.5\textwidth}
     \centering
@@ -322,7 +259,7 @@
         \item Enable CRPs \textbf{without programming skills} to build predictive models
         \item Incorporate \textbf{domain knowledge at every stage}
         \item Respect \textbf{methodological constraints} of real study designs
-        \item Use \textbf{clinical terminology} aligned with research practice
+        \item Use \textbf{clinical terminology} aligned with research practice --- (e.g., \textit{primary variable} instead of \textit{target}, \textit{criteria} instead of \textit{filters})
         \item Support \textbf{iterative refinement} guided by domain insights
       \end{itemize}
     \end{column}
@@ -345,38 +282,120 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Key Design Decision: Clinical Terminology} \small
+\begin{frame}{HAMELIN System Architecture} \small
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \centering
+      \scalebox{0.48}{
+        \begin{tikzpicture}[
+            node distance=1.5cm,
+            box/.style={rectangle, draw, text width=6cm, text centered,
+                        minimum height=2cm, rounded corners=0.3cm,
+                        drop shadow, line width=1pt, font=\small},
+            frontend/.style={box, fill=pink!35,   draw=pink!70},
+            backend/.style ={box, fill=cyan!10,   draw=cyan!50},
+            ludwig/.style  ={box, fill=yellow!35, draw=yellow!70},
+            arrow/.style={->, thick, color=gray!70, line width=0.8pt,
+                          shorten >=2pt, shorten <=2pt},
+        ]
+          \node[frontend] (frontend) at (0,0) {
+            \textbf{Frontend}\\
+            \textit{Graphical User Interface}\\[1.5mm]
+            Loading and visualization of datasets\\
+            Intuitive visual configuration\\
+            Guided tab navigation\\
+            Presentation of results\\
+            Validation of user inputs
+          };
+          \node[backend, below=1.5cm of frontend.south, anchor=north] (backend) {
+            \textbf{Backend}\\
+            \textit{Application logic layer}\\[1.5mm]
+            Data validation and processing\\
+            Translation of user commands\\
+            Automatic configuration file\\
+            Workflow coordination\\
+            Error and exception handling
+          };
+          \node[ludwig, below=1.5cm of backend.south, anchor=north] (ludwig) {
+            \textbf{Ludwig}\\
+            \textit{AutoML engine}\\[1.5mm]
+            Automatic model training\\
+            Intelligent algorithm selection\\
+            Performance evaluation\\
+            Hyperparameter optimization\\
+            Prediction
+          };
+          \draw[arrow] (frontend.south) -- (backend.north);
+          \draw[arrow] (backend.north) -- (frontend.south);
+          \draw[arrow] (backend.south) -- (ludwig.north);
+          \draw[arrow] (ludwig.north) -- (backend.south);
+          \node[above=0.8cm of frontend.north, rectangle, draw=gray!50,
+                fill=gray!10, text width=2.5cm, text centered,
+                rounded corners=0.2cm] (user) {
+            \small \textbf{User}\\ \small Clinical researcher
+          };
+          \draw[arrow] (user.south) -- (frontend.north);
+          \draw[arrow] (frontend.north) -- (user.south);
+          \node[anchor=center, rotate=90] at ([xshift=-4cm]frontend.center)
+            {\small \textbf{INTERFACE LAYER}};
+          \node[anchor=center, rotate=90] at ([xshift=-4cm]backend.center)
+            {\small \textbf{CORE LOGIC LAYER}};
+          \node[anchor=center, rotate=90] at ([xshift=-4cm]ludwig.center)
+            {\small \textbf{AUTOML LAYER}};
+        \end{tikzpicture}
+      }
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{Three-Layer Design}
+        \begin{itemize}\scriptsize
+          \item \textbf{Interface layer}: protocol-aware GUI with clinical terminology
+          \item \textbf{Core logic layer}: translates clinical inputs into ML configuration, handles validation and workflow coordination
+          \item \textbf{AutoML layer}: Ludwig backend handles training, algorithm selection and hyperparameter optimization
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{exampleblock}{Why Ludwig?}
+        \scriptsize
+        \begin{itemize}
+          \item YAML declarative config: human-readable, no coding required
+          \item Explicit missing data strategies: critical for clinical datasets
+          \item Active open-source development
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Key Design Decision --- Clinical Terminology} \small
   One of the most impactful outcomes of the participatory design process:
   \vspace{3mm}
 
   \begin{minipage}{0.48\textwidth}
-    \begin{alertblock}{Before (ML Jargon) \quad $\times$}
-      \begin{tabular}{ll}\scriptsize
+    \begin{block}{Before (ML Jargon) \quad $\times$}
+      \begin{tabular}{ll}
         \textbf{ML Term}   & \textbf{Perceived as\ldots} \\\hline
         Target variable    & Ambiguous, technical \\
         Filters            & Superficial selection \\
         Features           & Vague, unfamiliar \\
         Training set       & Unclear clinical meaning \\
       \end{tabular}
-    \end{alertblock}
+    \end{block}
   \end{minipage}%
   \hfill
   \begin{minipage}{0.48\textwidth}
-    \begin{exampleblock}{After (Clinical Language) \quad \checkmark}
-      \begin{tabular}{ll}\scriptsize
+    \begin{block}{After (Clinical Language) \quad \checkmark}
+      \begin{tabular}{ll}
         \textbf{Clinical Term} & \textbf{Familiar because\ldots} \\\hline
         Primary variable       & Matches endpoint hierarchy \\
         Criteria               & Mirrors inclusion/exclusion \\
         Variables              & Standard in clinical forms \\
         Study population       & Standard research concept \\
       \end{tabular}
-    \end{exampleblock}
+    \end{block}
   \end{minipage}
 
   \vspace{3mm}
-  \begin{block}{}
-    Language alignment reduces cognitive friction and increases researcher trust in the system.
-  \end{block}
+    Language alignment reduces cognitive friction and increases researcher trust in the system
 \end{frame}
 
 \begin{frame}{Tab-Based Workflow} \small
@@ -516,10 +535,10 @@
 \section{Conclusions}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Conclusions} \small
+\begin{frame}{Conclusions} \scriptsize
   \begin{block}{Main Contributions}
     \begin{itemize}
-      \item \textbf{First end-to-end HGML system} designed specifically for clinical research
+      \item \textbf{Novel HGML-grounded system} designed for clinical research
       \item \textbf{Protocol-aware interface}: temporal phases, endpoint hierarchy, inclusion/exclusion logic
       \item \textbf{Strong data-use HGML alignment}: 6/10 tasks fully or partially supported
       \item \textbf{Iterative refinement loop} enabling domain-guided exploration of the modeling space
@@ -527,13 +546,22 @@
     \end{itemize}
   \end{block}
   \vspace{3mm}
-  \begin{alertblock}{Take-Home Message}
+  \begin{block}{Future Work}
+  \begin{itemize}
+    \item Implement \textbf{solution history mechanism} to enable model comparison (MC1--MC5)
+    \item Extend HGML coverage: train/test split control, new variable creation
+    \item Broader \textbf{participatory evaluation} with additional CRP profiles
+    \item Validation on external clinical datasets beyond the four protocols
+  \end{itemize}
+    \end{block}
+    \vspace{3mm}
+  \begin{block}{Take-Home Message}
     Generic AutoML tools fail clinical research not because of lack of ML power, but because
     they ignore the \textbf{semantic structure of clinical data}.
-    
+    \\
     HAMELIN's contribution is not a new algorithm. It is a \textbf{new interface paradigm}
     aligned with how clinical research actually works.
-  \end{alertblock}
+  \end{block}
 \end{frame}
 
 % ── Thank you ─────────────────────────────────────────────────────────────────
