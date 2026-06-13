@@ -64,48 +64,30 @@
 \end{frame}
 
 % ── Table of contents ─────────────────────────────────────────────────────────
+\begin{comment}
 \begin{frame}[t]{Contents}
   \tableofcontents
 \end{frame}
+\end{comment}
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Motivation}
 % ══════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{Research Context} \small
-  \begin{columns}[T]
-    \begin{column}{0.54\textwidth}
-      \begin{itemize}
-        \item \textbf{Clinical ML opportunity}:\\
-          Predictive models to support diagnosis, prognosis and treatment decisions
+  \begin{itemize}
+    \item \textbf{Clinical ML opportunity}:\\
+      Predictive models to support diagnosis, prognosis and treatment decisions
       
-        \item \textbf{AutoML democratization}:\\
-          Tools reducing technical barriers in predictive modeling
+    \item \textbf{AutoML democratization}:\\
+      Tools reducing technical barriers in predictive modeling
 
-        \item \textbf{Clinical study types}:\\
-          Each with distinct protocol constraints and variable structures
+    \item \textbf{Clinical study types}:\\
+      Each with distinct protocol constraints and variable structures
 
-        \item \textbf{Gap in practice}:\\
-          Domain-agnostic tools fail in clinical settings — potential remains unrealized
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.44\textwidth}
-      \begin{itemize}
-        \item \textbf{HAMELIN proposal}:\\
-          Protocol-aware AutoML designed for Clinical Research Professionals (CRPs)
-      \end{itemize}
-      \vfill
-      \vspace{4mm}
-      \begin{block}{Four Research Contributions}
-        \begin{enumerate} \scriptsize
-          \item Protocol-aware interface grounded in real clinical protocols
-          \item Mapping clinical concepts to ML pipeline stages
-          \item Operationalization and evaluation of HGML criteria
-          \item Participatory design methodology involving CRPs
-        \end{enumerate}
-      \end{block}
-    \end{column}
-  \end{columns}
+    \item \textbf{Gap in practice}:\\
+      Domain-agnostic tools fail in clinical settings — potential remains unrealized
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{The Expertise Gap} \small
@@ -246,10 +228,7 @@
 
 \begin{frame}{What is HAMELIN?} \small  
   \begin{block}{Definition} \small  
-    \textbf{HAMELIN} --- a \textbf{no-code, protocol-aware AutoML} application under development,  
-    enabling Clinical Research Professionals to build predictive models while keeping  
-    domain knowledge at the centre of the process. HGML criteria serve as the  
-    evaluation lens for assessing its design and implementation.  
+    \textbf{HAMELIN}: a no-code, protocol-aware AutoML application under development that enables Clinical Research Professionals to build predictive models while keeping domain knowledge central to the process. HGML criteria are used to evaluate its design and implementation.
   \end{block}  
   \vspace{4mm}  
   
@@ -260,7 +239,7 @@
         \item No programming background required  
         \item Incorporate \textbf{domain knowledge at every stage}  
         \item Respect \textbf{methodological constraints} of real study designs  
-        \item Use \textbf{clinical terminology} aligned with research practice --- (e.g., \textit{primary variable} instead of \textit{target}, \textit{criteria} instead of \textit{filters})  
+        \item Use \textbf{clinical terminology} aligned with research practice (e.g., \textit{primary variable} instead of \textit{target}, \textit{criteria} instead of \textit{filters})  
         \item Support \textbf{iterative refinement} guided by domain insights  
       \end{itemize}  
     \end{column}  
@@ -365,38 +344,6 @@
       \end{exampleblock}
     \end{column}
   \end{columns}
-\end{frame}
-
-\begin{frame}{Key Design Decision --- Clinical Terminology} \small
-  One of the most impactful outcomes of the participatory design process:
-  \vspace{3mm}
-
-  \begin{minipage}{0.48\textwidth}
-    \begin{block}{Before (ML Jargon) \quad $\times$}
-      \begin{tabular}{ll}
-        \textbf{ML Term}   & \textbf{Perceived as\ldots} \\\hline
-        Target variable    & Ambiguous, technical \\
-        Filters            & Superficial selection \\
-        Features           & Vague, unfamiliar \\
-        Training set       & Unclear clinical meaning \\
-      \end{tabular}
-    \end{block}
-  \end{minipage}%
-  \hfill
-  \begin{minipage}{0.48\textwidth}
-    \begin{block}{After (Clinical Language) \quad \checkmark}
-      \begin{tabular}{ll}
-        \textbf{Clinical Term} & \textbf{Familiar because\ldots} \\\hline
-        Primary variable       & Matches endpoint hierarchy \\
-        Criteria               & Mirrors inclusion/exclusion \\
-        Variables              & Standard in clinical forms \\
-        Study population       & Standard research concept \\
-      \end{tabular}
-    \end{block}
-  \end{minipage}
-
-  \vspace{3mm}
-    Language alignment reduces cognitive friction and increases researcher trust in the system
 \end{frame}
 
 \begin{frame}{Tab-Based Workflow} \small
