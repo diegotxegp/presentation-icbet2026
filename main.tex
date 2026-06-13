@@ -30,17 +30,17 @@
   for Democratizing Predictive Modeling in Clinical Research}
 
 \author[Diego García-Prieto]{%
-  Diego García-Prieto\inst{1} \and
+  Diego García-Prieto*\inst{1} \and
   Camilo Palazuelos\inst{1} \and
   Rafael Duque\inst{1} \and
-  Lucía Lavín-Alconero\inst{2}}
+  Lucía Lavín-Alconero\inst{2}\\ {\small\texttt{(diego.garciaprieto @unican.es)}}}
 
-\institute{%
+\institute[University of Cantabria]{%
   \inst{1}Dept. of Mathematics, Statistics and Computer Science
-          \textemdash{} University de Cantabria
+          \textemdash{} University de Cantabria (Spain)
   \and
   \inst{2}Clinical Trials Agency Valdecilla-IDIVAL
-          \textemdash{} Marqués de Valdecilla University Hospital}
+          \textemdash{} Marqués de Valdecilla University Hospital (Spain)}
 
 \date{14th June, 2026}
 
@@ -76,14 +76,14 @@
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
       \begin{itemize}
-        \item \textbf{AutoML democratization}:\\
-          Strong need for tools reducing technical barriers in predictive modeling
-
         \item \textbf{Clinical ML opportunity}:\\
           Predictive models to support diagnosis, prognosis and treatment decisions
+      
+        \item \textbf{AutoML democratization}:\\
+          Tools reducing technical barriers in predictive modeling
 
         \item \textbf{Clinical study types}:\\
-          Patient registries · Observational studies · Clinical trials:\\ each with distinct protocol constraints and variable structures
+          Each with distinct protocol constraints and variable structures
 
         \item \textbf{Gap in practice}:\\
           Domain-agnostic tools fail in clinical settings — potential remains unrealized
@@ -165,8 +165,7 @@
   \end{table}
   \vspace{2mm}
   \begin{alertblock}{Key Finding}
-    No existing tool adapts to the distinct requirements of patient registries,
-    observational studies and clinical trials within a unified interface.
+    No existing tool adapts to the distinct requirements of clinical studies within a unified interface.
   \end{alertblock}
 \end{frame}
 
@@ -245,41 +244,43 @@
 \section{HAMELIN System}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{What is HAMELIN?} \small
-  \begin{block}{Definition} \small
-    \textbf{HAMELIN} --- a \textbf{no-code, protocol-aware AutoML} application under development,
-    specifically designed to operationalize HGML principles for clinical research
-  \end{block}
-  \vspace{4mm}
-
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth} \small
-      \textbf{Core Design Goals}
-      \begin{itemize}
-        \item Enable CRPs \textbf{without programming skills} to build predictive models
-        \item Incorporate \textbf{domain knowledge at every stage}
-        \item Respect \textbf{methodological constraints} of real study designs
-        \item Use \textbf{clinical terminology} aligned with research practice --- (e.g., \textit{primary variable} instead of \textit{target}, \textit{criteria} instead of \textit{filters})
-        \item Support \textbf{iterative refinement} guided by domain insights
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.47\textwidth}
-      \begin{block}{Participatory Design Process}
-        \begin{itemize}\scriptsize
-          \item Partner CRP from IDIVAL / Valdecilla
-          \item Weekly data science team meetings
-          \item Quarterly CRP evaluation sessions
-          \item Mockup $\rightarrow$ feedback $\rightarrow$ implementation cycles
-        \end{itemize}
-      \end{block}
-      \vspace{2mm}
-      \begin{block}{Four Real Clinical Protocols}
-        \scriptsize
-        COVID-19 Registry · UPS Observational Study\\
-        COLCHI-COVID Trial · VACAB-2022 Trial
-      \end{block}
-    \end{column}
-  \end{columns}
+\begin{frame}{What is HAMELIN?} \small  
+  \begin{block}{Definition} \small  
+    \textbf{HAMELIN} --- a \textbf{no-code, protocol-aware AutoML} application under development,  
+    enabling Clinical Research Professionals to build predictive models while keeping  
+    domain knowledge at the centre of the process. HGML criteria serve as the  
+    evaluation lens for assessing its design and implementation.  
+  \end{block}  
+  \vspace{4mm}  
+  
+  \begin{columns}[T]  
+    \begin{column}{0.5\textwidth} \small  
+      \textbf{Core Design Goals}  
+      \begin{itemize}  
+        \item No programming background required  
+        \item Incorporate \textbf{domain knowledge at every stage}  
+        \item Respect \textbf{methodological constraints} of real study designs  
+        \item Use \textbf{clinical terminology} aligned with research practice --- (e.g., \textit{primary variable} instead of \textit{target}, \textit{criteria} instead of \textit{filters})  
+        \item Support \textbf{iterative refinement} guided by domain insights  
+      \end{itemize}  
+    \end{column}  
+    \begin{column}{0.47\textwidth}  
+      \begin{block}{Participatory Design Process}  
+        \begin{itemize}\scriptsize  
+          \item Partner CRP from IDIVAL / Valdecilla  
+          \item Weekly data science team meetings  
+          \item Quarterly CRP evaluation sessions  
+          \item Mockup $\rightarrow$ feedback $\rightarrow$ implementation cycles  
+        \end{itemize}  
+      \end{block}  
+      \vspace{2mm}  
+      \begin{block}{Four Real Clinical Protocols}  
+        \scriptsize  
+        COVID-19 Registry · UPS Observational Study\\  
+        COLCHI-COVID Trial · VACAB-2022 Trial  
+      \end{block}  
+    \end{column}  
+  \end{columns}  
 \end{frame}
 
 \begin{frame}{HAMELIN System Architecture} \small
@@ -424,7 +425,7 @@
     \begin{multicols}{2}
       \begin{enumerate}\scriptsize
         \item \textbf{Start}: Project creation, metadata, dataset loading
-        \item \textbf{Status}: Automatic EDA --- stats, missing data heatmap
+        \item \textbf{Status}: Automatic data analysis --- stats, missing data heatmap
         \item \textbf{Primary Variable}: Target selection, task-type detection
         \item \textbf{Criteria}: Inclusion/exclusion rule builder
         \item \textbf{Settings}: Metrics, missing data strategies, runtime limit
@@ -545,22 +546,12 @@
       \item \textbf{Participatory methodology} grounded in four real protocols and a real clinical dataset
     \end{itemize}
   \end{block}
-  \vspace{3mm}
-  \begin{block}{Future Work}
-  \begin{itemize}
-    \item Implement \textbf{solution history mechanism} to enable model comparison (MC1--MC5)
-    \item Extend HGML coverage: train/test split control, new variable creation
-    \item Broader \textbf{participatory evaluation} with additional CRP profiles
-    \item Validation on external clinical datasets beyond the four protocols
-  \end{itemize}
-    \end{block}
     \vspace{3mm}
   \begin{block}{Take-Home Message}
-    Generic AutoML tools fail clinical research not because of lack of ML power, but because
-    they ignore the \textbf{semantic structure of clinical data}.
-    \\
-    HAMELIN's contribution is not a new algorithm. It is a \textbf{new interface paradigm}
-    aligned with how clinical research actually works.
+  \begin{itemize}
+      \item Generic AutoML tools fail clinical research not because of lack of ML power, but because they ignore the \textbf{semantic structure of clinical data}.
+      \item HAMELIN's contribution is not a new algorithm. It is a \textbf{new interface paradigm} aligned with how clinical research actually works.
+  \end{itemize}
   \end{block}
 \end{frame}
 
